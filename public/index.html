@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full-Screen Messenger</title>
+    <link rel="stylesheet" href="css/index.css"/>
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+</head>
+<body>
+    <table hx-get="/users" hx-trigger="load" hx-target="#users">
+        <tr>
+          <th>ID</th><th>Name</th>
+        </tr>
+        <tbody id="users"></tbody>
+    </table>
+</body>
+<script>
+    document.body.addEventListener('htmx:afterSwap', function(event) {
+        // Проверяем, что запрос был выполнен для таблицы с id="users"
+        if (event.target.id === 'users') {
+            // Парсим JSON-данные
+            const users = JSON.parse(event.target.innerText);
+            console.log(users)
+            
+            // Создаем строки для таблицы
+            const rows = users.map(user => {
+                return `<tr><td>${user.user_id}</td><td>${user.username}</td></tr>`;
+            }).join('');
+            
+            // Вставляем строки в таблицу
+            document.getElementById('users').innerHTML = rows;
+        }
+    });
+</script>
+</html>
