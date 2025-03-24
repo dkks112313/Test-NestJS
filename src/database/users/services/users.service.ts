@@ -1,7 +1,7 @@
 import {
   CreateUserParams,
   UpdateUserParams,
-} from '../../users/types/types';
+} from 'src/database/users/types/types';
 
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';

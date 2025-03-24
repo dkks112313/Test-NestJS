@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 import { Response } from 'express';
 import { join } from 'path';
 import { AppService } from './app.service';
-import { UsersService } from './users/services/users.service';
+import { UsersService } from './database/users/services/users.service';
 
 @Controller()
 export class AppController {

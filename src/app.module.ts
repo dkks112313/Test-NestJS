@@ -6,10 +6,11 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { User } from './entity/User';
+import { User } from './database/entity/User';
 
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { UsersService } from './users/services/users.service';
+import { UsersService } from './database/users/services/users.service';
+import { AppGateway } from './app/app.gateway';
 
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import { UsersService } from './users/services/users.service';
     TypeOrmModule.forFeature([User])
   ],
   controllers: [AppController],
-  providers: [AppService, UsersService],
+  providers: [AppService, UsersService, AppGateway],
   exports: [UsersService],
 })
 export class AppModule {}

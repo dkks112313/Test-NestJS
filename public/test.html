@@ -392,11 +392,23 @@
 
         // WebSocket connection
         try {
-            const socket = new WebSocket("ws://127.0.0.1:3000");
-            
-            socket.onopen = function() {
-                console.log("WebSocket connection established");
-            };
+            const socket = io('http://127.0.0.1:3000/chat'); // Подключаемся к WebSocket Gateway
+
+            socket.on('connect', () => {
+                console.log('Соединение установлено');
+            });
+
+            socket.on('send-message', (data) => {
+                console.log('Получено сообщение:', data);
+            });
+
+            socket.on('disconnect', () => {
+                console.log('Соединение разорвано');
+            });
+
+            function sendMessage() {
+                socket.emit('new-message', { text: 'Привет от клиента!' });
+            }
             
             socket.onmessage = function(event) {
                 try {
@@ -424,17 +436,10 @@
                     console.error("Error parsing WebSocket message:", error);
                 }
             };
-            
-            socket.onerror = function(error) {
-                console.error("WebSocket error:", error);
-            };
-            
-            socket.onclose = function() {
-                console.log("WebSocket connection closed");
-            };
         } catch (error) {
             console.error("Error setting up WebSocket:", error);
         }
     </script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 </body>
 </html>
