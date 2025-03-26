@@ -22,7 +22,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('new-message')
   public newMessage(client: Socket, message: string) {
     console.log(message);
-
+    
     this.server.emit('send-message', {
       client: client.id,
       message: message,
