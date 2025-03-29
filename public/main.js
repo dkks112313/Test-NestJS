@@ -1,7 +1,8 @@
 // Store current chat ID
 let currentChatId = "1";
-let late 
-const chatData = {
+let chatData = {}
+
+const late = {
     "1": {
         name: "John Doe",
         initials: "JD",
@@ -93,7 +94,7 @@ document.body.addEventListener('htmx:afterSwap', function(event) {
             
             // Create HTML for chats ${user.user_id}
             const chatsHtml = users.map(user => {
-                return `<div class="chat-item p-3 hover:bg-gray-50 cursor-pointer" hx-get="/api/chat/2" hx-target="#chat-window" hx-trigger="click">
+                return `<div class="chat-item p-3 hover:bg-gray-50 cursor-pointer" hx-get="/api/chat/${user.user_id}" hx-target="#chat-window" hx-trigger="click">
                     <div class="flex items-center space-x-3">
                         <div class="chat-avatar bg-blue-100">
                             <span class="text-blue-600 font-medium text-sm">${user.initials || 'UN'}</span>
@@ -108,8 +109,21 @@ document.body.addEventListener('htmx:afterSwap', function(event) {
                     </div>
                 </div>`;
             }).join('');
+
+            users.map(user => {
+                chatData[user.user_id] = {
+                    name: user.username,
+                    initials: user.username[0],
+                    status: "Online",
+                    color: "blue",
+                    messages: []
+                }
+            })
+
+            console.log(chatData)
+
+            //currentChatId = user[0].user_id
             
-            // Insert chats HTML
             document.getElementById('chats').innerHTML = chatsHtml;
 
             htmx.process(document.getElementById('chats'));
@@ -267,9 +281,8 @@ document.addEventListener('submit', function(event) {
     }
 });
 
-// WebSocket connection
 try {
-    const socket = io('http://127.0.0.1:3000/chat'); // Подключаемся к WebSocket Gateway
+    const socket = io('http://127.0.0.1:3000/chat');
 
     socket.on('connect', () => {
         console.log('Соединение установлено');
@@ -278,7 +291,7 @@ try {
     socket.on('send-message', (data) => {
         console.log('Получено сообщение:', data);
         const messageList = document.querySelector(`.message-list[data-chat-id="${currentChatId}"] .flex-col-reverse`);
-        if (data.client != socket.id) {
+        if (data.client != socket.id && currentChatId == "1") {
             const newMessage = `
                 <div class="flex items-end">
                     <div class="chat-avatar-sm bg-blue-100">
