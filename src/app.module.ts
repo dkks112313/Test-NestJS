@@ -9,8 +9,15 @@ import { AppService } from './app.service';
 import { User } from './database/entity/User';
 
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { UsersService } from './database/users/services/users.service';
 import { AppGateway } from './app/app.gateway';
+import { Room } from './database/entity/Room';
+import { UsersModule } from './database/users/users.module';
+import { RoomsModule } from './database/rooms/rooms.module';
+import { MembersModule } from './database/members/members.module';
+import { MessagesModule } from './database/messages/messages.module';
+import { ChatMember } from './database/entity/ChatMember';
+import { Message } from './database/entity/Message';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -28,13 +35,16 @@ import { AppGateway } from './app/app.gateway';
       username: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      entities: [User],
+      entities: [User, Room, ChatMember, Message],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([User])
+    UsersModule,
+    RoomsModule,
+    MembersModule,
+    MessagesModule,
+    AuthModule
   ],
   controllers: [AppController],
-  providers: [AppService, UsersService, AppGateway],
-  exports: [UsersService],
+  providers: [AppService, AppGateway],
 })
 export class AppModule {}

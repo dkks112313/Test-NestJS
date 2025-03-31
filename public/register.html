@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link rel="stylesheet" href="/css/register.css"/>
+    <script src="https://unpkg.com/htmx.org@1.8.4"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="card-header">Registration</div>
+
+                    <div class="card-body">
+                        <form id="register-form" hx-post="/auth/register" hx-target="#register-response" hx-swap="innerHTML">
+                            <div class="form-group row">
+                                <label for="name" class="col-md-4 col-form-label text-md-right space-right">Username</label>
+
+                                <div class="col-md-6">
+                                    <input id="name" type="text" class="form-control" name="username" required autofocus placeholder="Please input username">
+                                    <div class="invalid-feedback" id="name-error"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="email" class="col-md-4 col-form-label text-md-right space-right">Email</label>
+
+                                <div class="col-md-6">
+                                    <input id="email" type="email" class="form-control" name="email" required placeholder="Input your email">
+                                    <div class="invalid-feedback" id="email-error"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="password" class="col-md-4 col-form-label text-md-right space-right">Password</label>
+
+                                <div class="col-md-6">
+                                    <input id="password" type="password" class="form-control" name="password" required placeholder="Input password">
+                                    <div class="invalid-feedback" id="password-error"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="password-confirm" class="col-md-4 col-form-label text-md-right space-right">Repeat password</label>
+
+                                <div class="col-md-6">
+                                    <input id="password-confirm" type="password" class="form-control" name="confirmPassword" required placeholder="Please repeat password">
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-4">
+                                <div class="col-md-6 offset-md-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        Registration
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div id="register-response"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('htmx:afterSwap', (event) => {
+            if (event.target.id === 'register-response') {
+                const response = JSON.parse(event.target.innerText);
+            
+                if (response) {
+                    localStorage.setItem('token', response.token);
+                    window.location.href = '/chat';
+                } else {
+                    alert('Registration error');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

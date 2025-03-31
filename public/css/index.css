@@ -1,4 +1,35 @@
 /* Base styles */
+:root {
+    --bg-color: #f3f4f6;
+    --text-color: #1f2937;
+    --primary-color: #2563eb;
+    --secondary-color: #3b82f6;
+    --message-received: white;
+    --message-sent: var(--primary-color);
+}
+
+.dark-theme {
+    --bg-color: #1a1a2e;
+    --text-color: #e0e0e0;
+    --primary-color: #3a86ff;
+    --secondary-color: #2c2c54;
+    --message-received: #2c2c54;
+    --message-sent: var(--primary-color);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.message-received {
+    background-color: var(--message-received);
+}
+
+.message-sent {
+    background-color: var(--message-sent);
+}
+
 body, html {
     margin: 0;
     padding: 0;

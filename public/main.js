@@ -2,6 +2,22 @@
 let currentChatId = "1";
 let chatData = {}
 
+document.getElementById('theme-toggle').addEventListener('click', function() {
+    document.body.classList.toggle('dark-theme');
+});
+
+const toggleTheme = () => {
+    document.body.classList.toggle('dark-theme');
+    localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+};
+
+// Проверяем сохраненную тему при загрузке страницы
+if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-theme');
+}
+
+document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+
 const late = {
     "1": {
         name: "John Doe",
